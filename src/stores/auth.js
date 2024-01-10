@@ -34,19 +34,18 @@ export const useAuthStore = defineStore('auth', {
 			removeToken()
 		},
 		async checkUser() {
-			const route = useRoute();
-			const router = useRouter();
 			const token = getToken();
 			if (token) {
 				try {
 					await this.getMe();
-					const { redirect } = route.query;
-    			await router.push(redirect ? redirect : { name: "Home" });
+					return true;
 				} catch (e) {
 					removeToken();
 					console.error(e);
+					return false;
 				}
 			}
+			return false;
 		}
 	},
 })
